@@ -63,7 +63,6 @@ func razlicenDen(s, e time.Time) time.Duration {
 	vreme1 := time.Date(s.Year(), s.Month(), s.Day(), 16, 0, 0, 0, time.UTC).Sub(s)
 	vreme2 := e.Sub(time.Date(e.Year(), e.Month(), e.Day(), 8, 0, 0, 0, time.UTC))
 	return vreme1 + vreme2
-
 }
 
 func main() {
