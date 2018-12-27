@@ -11,29 +11,29 @@ const WorkDay = 8 * time.Hour
 const endOfWork = 16
 const startOfWork = 8
 
-func checkWorkTime(d time.Time) time.Time {
+func voRabotnoVreme(d time.Time) time.Time {
 	if d.Weekday() == time.Weekday(6) {
-		afterTwoDays := d.Add(Day * 2)
-		return time.Date(afterTwoDays.Year(), afterTwoDays.Month(), afterTwoDays.Day(), startOfWork, 0, 0, 0, time.UTC)
+		posleDvaDena := d.Add(Day * 2)
+		return time.Date(posleDvaDena.Year(), posleDvaDena.Month(), posleDvaDena.Day(), startOfWork, 0, 0, 0, time.UTC)
 	} else if d.Weekday() == time.Weekday(0) {
-		afterOneDay := d.Add(Day)
-		return time.Date(afterOneDay.Year(), afterOneDay.Month(), afterOneDay.Day(), startOfWork, 0, 0, 0, time.UTC)
+		posleDen := d.Add(Day)
+		return time.Date(posleDen.Year(), posleDen.Month(), posleDen.Day(), startOfWork, 0, 0, 0, time.UTC)
 	} else if d.Hour() >= endOfWork {
-		afterOneDay := d.Add(Day)
-		if afterOneDay.Weekday() == time.Weekday(6) {
-			afterThreeDays := d.Add(Day * 3)
-			return time.Date(afterThreeDays.Year(), afterThreeDays.Month(), afterThreeDays.Day(), startOfWork, 0, 0, 0, time.UTC)
+		posleDen := d.Add(Day)
+		if posleDen.Weekday() == time.Weekday(6) {
+			posleTriDena := d.Add(Day * 3)
+			return time.Date(posleTriDena.Year(), posleTriDena.Month(), posleTriDena.Day(), startOfWork, 0, 0, 0, time.UTC)
 		}
-		return time.Date(afterOneDay.Year(), afterOneDay.Month(), afterOneDay.Day(), startOfWork, 0, 0, 0, time.UTC)
+		return time.Date(posleDen.Year(), posleDen.Month(), posleDen.Day(), startOfWork, 0, 0, 0, time.UTC)
 	} else if d.Hour() < startOfWork {
 		return time.Date(d.Year(), d.Month(), d.Day(), startOfWork, 0, 0, 0, time.UTC)
 	}
 	return d
 }
 
-func odzemi(s, e time.Time) time.Duration {
-	startTime := checkWorkTime(s)
-	endTime := checkWorkTime(e)
+func vremetraenje(s, e time.Time) time.Duration {
+	startTime := voRabotnoVreme(s)
+	endTime := voRabotnoVreme(e)
 	if startTime.Month() == endTime.Month() && startTime.Day() == endTime.Day() {
 		return endTime.Sub(startTime)
 	}
@@ -82,11 +82,11 @@ func main() {
 		} else {
 			endTime = parseTime(row.Cells[3].String())
 		}
-		vremeCase := odzemi(startTime, endTime)
+		vremeCase := vremetraenje(startTime, endTime)
 		VkupnoVreme += vremeCase
 		fmt.Println(row.Cells[1:4], vremeCase.String())
 	}
-	fmt.Println(VkupnoVreme/time.Duration(len(AdventSheet.Rows)), len(AdventSheet.Rows))
+	fmt.Println(VkupnoVreme, "/", len(AdventSheet.Rows), "=", VkupnoVreme/time.Duration(len(AdventSheet.Rows)))
 }
 
 func parseTime(s string) time.Time {
