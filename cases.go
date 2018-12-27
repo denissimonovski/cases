@@ -6,10 +6,10 @@ import (
 	"time"
 )
 
-const Day time.Duration = 24 * time.Hour
-const WorkDay time.Duration = 8 * time.Hour
-const endOfWork int = 16
-const startOfWork int = 8
+const Day = 24 * time.Hour
+const WorkDay = 8 * time.Hour
+const endOfWork = 16
+const startOfWork = 8
 
 func checkWorkTime(d time.Time) time.Time {
 	if d.Weekday() == time.Weekday(6) {
@@ -67,7 +67,7 @@ func razlicenDen(s, e time.Time) time.Duration {
 
 func main() {
 	var VkupnoVreme time.Duration
-	xlFileName := "/root/go/src/cases/dookt.xlsx"
+	xlFileName := "godina.xlsx"
 	xlFile, err := xlsx.OpenFile(xlFileName)
 	if err != nil {
 		fmt.Println(err)
@@ -77,8 +77,8 @@ func main() {
 		startTime := parseTime(row.Cells[2].String())
 		var endTime time.Time
 		if row.Cells[3].String() == "-" {
-			//endTime = time.Date(2018, 31, 12, 16, 0, 0, 0, time.UTC)
-			continue
+			endTime = time.Date(2018, 12, 31, 16, 0, 0, 0, time.UTC)
+			//continue
 		} else {
 			endTime = parseTime(row.Cells[3].String())
 		}
