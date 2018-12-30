@@ -60,8 +60,8 @@ func denovi(s, e time.Time) int {
 }
 
 func razlicenDen(s, e time.Time) time.Duration {
-	vreme1 := time.Date(s.Year(), s.Month(), s.Day(), 16, 0, 0, 0, time.UTC).Sub(s)
-	vreme2 := e.Sub(time.Date(e.Year(), e.Month(), e.Day(), 8, 0, 0, 0, time.UTC))
+	vreme1 := time.Date(s.Year(), s.Month(), s.Day(), endOfWork, 0, 0, 0, time.UTC).Sub(s)
+	vreme2 := e.Sub(time.Date(e.Year(), e.Month(), e.Day(), startOfWork, 0, 0, 0, time.UTC))
 	return vreme1 + vreme2
 }
 
@@ -77,7 +77,7 @@ func main() {
 		startTime := parseTime(row.Cells[2].String())
 		var endTime time.Time
 		if row.Cells[3].String() == "-" {
-			endTime = time.Date(2018, 12, 31, 16, 0, 0, 0, time.UTC)
+			endTime = time.Date(2018, 12, 31, endOfWork, 0, 0, 0, time.UTC)
 			//continue
 		} else {
 			endTime = parseTime(row.Cells[3].String())
